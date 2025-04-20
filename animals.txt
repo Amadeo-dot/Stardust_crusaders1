@@ -1,4 +1,11 @@
+
 lion yellow
 tiger orange
 leopard black
 turtle green
+=======
+lion	marron
+tiger	azul
+leopard	purpura
+turtle	naranga
+
