@@ -1,0 +1,311 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
+
+namespace Conversor
+{
+    public partial class Component1 : Button
+    {
+        ButtonsShapes forma;
+        Color color1, color2;
+        private Color color3 = Color.White;
+        private Color color4 = Color.White;
+        private int color1Transparent = 250;
+        private int color2Transparent = 250;
+        private Color clickcolor1 = Color.White;
+        private Color clickcolor2 = Color.White;
+        private Color m_hovercolor1 = Color.White;
+        private Color m_hovercolor2 = Color.White;
+        private int angulo = 90;
+        private int textX = 25;
+        private int textY = 400;
+        private String text = "";
+        public Color borde1 = Color.FromArgb(220, 220, 220);
+        public Color borde2 = Color.FromArgb(150, 150, 150);
+        public Boolean showButtonText = true;
+        public int borderWidth = 2;
+        public Color borderColor = Color.Transparent;
+
+ 
+        private AutoScaleMode _autoscaleMode = AutoScaleMode.Dpi;
+        private string _Text = "Text";
+
+
+
+        public override string Text
+        {
+            get
+            {
+                return _Text;
+            }
+            set
+            {
+                _Text = value;
+            }
+        }
+        public enum ButtonsShapes
+        {
+            Rect
+        }
+
+        
+
+        public ButtonsShapes ButtonShape
+        {
+            get { return forma; }
+            set
+            {
+                forma = value; Invalidate();
+            }
+        }
+
+        public String ButtonText
+        {
+            get { return text; }
+            set { text = value; Invalidate(); }
+        }
+
+        public int BorderWidth
+        {
+            get { return borderWidth; }
+            set { borderWidth = value; Invalidate(); }
+        }
+
+
+        void SetBorderColor(Color bdrColor)
+        {
+            int red = bdrColor.R - 40;
+            int green = bdrColor.G - 40;
+            int blue = bdrColor.B - 40;
+            if (red < 0)
+                red = 0;
+            if (green < 0)
+                green = 0;
+            if (blue < 0)
+                blue = 0;
+
+            borde1 = Color.FromArgb(red, green, blue);
+            borde2 = bdrColor;
+        }
+
+
+        public Color BorderColor
+        {
+            get { return borderColor; }
+            set
+            {
+                borderColor = value;
+                if (borderColor == Color.Transparent)
+                {
+                    borde1 = Color.FromArgb(220, 220, 220);
+                    borde2 = Color.FromArgb(150, 150, 150);
+                }
+                else
+                {
+                    SetBorderColor(borderColor);
+                }
+
+            }
+        }
+
+        public Color StartColor
+        {
+            get { return color1; }
+            set { color1 = value; Invalidate(); }
+        }
+        public Color EndColor
+        {
+            get { return color2; }
+            set { color2 = value; Invalidate(); }
+        }
+        public Color MouseHoverColor1
+        {
+            get { return m_hovercolor1; }
+            set { m_hovercolor1 = value; Invalidate(); }
+        }
+        public Color MouseHoverColor2
+        {
+            get { return m_hovercolor2; }
+            set { m_hovercolor2 = value; Invalidate(); }
+        }
+        public Color MouseClickColor1
+        {
+            get { return clickcolor1; }
+            set { clickcolor1 = value; Invalidate(); }
+        }
+        public Color MouseClickColor2
+        {
+            get { return clickcolor2; }
+            set { clickcolor2 = value; Invalidate(); }
+        }
+
+        public int Transparent1
+        {
+            get { return color1Transparent; }
+            set
+            {
+                color1Transparent = value;
+                if (color1Transparent > 255)
+                {
+                    color1Transparent = 255;
+                    Invalidate();
+                }
+                else
+                    Invalidate();
+            }
+        }
+
+        public int Transparent2
+        {
+            get { return color2Transparent; }
+            set
+            {
+                color2Transparent = value;
+                if (color2Transparent > 255)
+                {
+                    color2Transparent = 255;
+                    Invalidate();
+                }
+                else
+                    Invalidate();
+            }
+        }
+
+        public int GradientAngle
+        {
+            get { return angulo; }
+            set { angulo = value; Invalidate(); }
+        }
+
+        public int TextLocation_X
+        {
+            get { return textX; }
+            set { textX = value; Invalidate(); }
+        }
+        public int TextLocation_Y
+        {
+            get { return textY; }
+            set { textY = value; Invalidate(); }
+        }
+
+        public Boolean ShowButtontext
+        {
+            get { return showButtonText; }
+            set { showButtonText = value; Invalidate(); }
+        }
+
+
+        public Component1()
+        {
+            this.Size = new Size(100, 40);
+            this.BackColor = Color.Transparent;
+            this.FlatStyle = FlatStyle.Flat;
+            this.FlatAppearance.BorderSize = 0;
+            this.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            this.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            text = this.Text;
+        } 
+        protected override void OnMouseEnter(EventArgs e)
+        {
+            base.OnMouseEnter(e);
+            color1 = color3;
+            color2 = color4;
+            color1 = m_hovercolor1;
+            color2 = m_hovercolor2;
+        }
+        protected override void OnMouseLeave(EventArgs e)
+        {
+            base.OnMouseLeave(e);
+            color3 = color1;
+            color4 = color2;
+            SetBorderColor(borderColor);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs mevent)
+        {
+            base.OnMouseDown(mevent);
+            color1 = clickcolor1;
+            color2 = clickcolor2;
+
+            int red = borderColor.R - 40;
+            int green = borderColor.G - 40;
+            int blue = borderColor.B - 40;
+            if (red < 0)
+                red = 0;
+            if (green < 0)
+                green = 0;
+            if (blue < 0)
+                blue = 0;
+
+            borde1 = borderColor;
+            borde2 = Color.FromArgb(red, green, blue);
+            this.Invalidate();
+        }
+
+        protected override void OnMouseUp(MouseEventArgs mevent)
+        {
+            base.OnMouseUp(mevent);
+            OnMouseLeave(mevent);
+            color3 = color1;
+            color4 = color2;
+            SetBorderColor(borderColor);
+            this.Invalidate();
+        }
+
+        protected override void OnLostFocus(EventArgs e)
+        {
+            base.OnLostFocus(e);
+            color3 = color1;
+            color4 = color2;
+            this.Invalidate();
+        }
+
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            textX = (int)((this.Width / 3) - 1);
+            textY = (int)((this.Height / 3) - 1);
+        }
+
+        void Cuadrado(Graphics g)
+        {
+            Color c1 = Color.FromArgb(color1Transparent, color3);
+            Color c2 = Color.FromArgb(color2Transparent, color4);
+            Brush b = new System.Drawing.Drawing2D.LinearGradientBrush(ClientRectangle, c1, c2, angulo);
+            g.FillRectangle(b, 0, 0, this.Width, this.Height);
+            for (int i = 0; i < borderWidth; i++)
+            {
+                g.DrawLine(new Pen(new SolidBrush(borde1)), this.Width - i, 0, this.Width - i, this.Height);
+                g.DrawLine(new Pen(new SolidBrush(borde1)), 0, this.Height - i, this.Width, this.Height - i);
+
+                g.DrawLine(new Pen(new SolidBrush(borde2)), 0 + i, 0, 0 + i, this.Height);
+                g.DrawLine(new Pen(new SolidBrush(borde2)), 0, 0 + i, this.Width, i);
+            }
+            if (showButtonText)
+            {
+                Point p = new Point(textX, textY);
+                SolidBrush frcolor = new SolidBrush(this.ForeColor);
+                g.DrawString(text, this.Font, frcolor, p);
+            }
+            b.Dispose();
+        }
+
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            switch (forma)
+            {
+                case ButtonsShapes.Rect:
+                    this.Cuadrado(e.Graphics);
+                    break;
+            }
+        }
+    }
+}
